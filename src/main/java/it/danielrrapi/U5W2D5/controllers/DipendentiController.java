@@ -56,6 +56,7 @@ public class DipendentiController {
     public void getDipendenteByIdAndDelete(@PathVariable long id) {
         this.dipendenteService.findByIdAndDelete(id);
     }
+
     @PostMapping("/{id}/upload")
     public String uploadAvatar(@RequestParam("avatar") MultipartFile image, @PathVariable int id) throws IOException {
         return this.dipendenteService.uploadImage(image, id);
