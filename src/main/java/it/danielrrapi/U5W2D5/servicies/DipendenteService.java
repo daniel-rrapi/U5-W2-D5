@@ -2,6 +2,7 @@ package it.danielrrapi.U5W2D5.servicies;
 
 import it.danielrrapi.U5W2D5.entities.Dipendente;
 import it.danielrrapi.U5W2D5.exceptions.BadRequestException;
+import it.danielrrapi.U5W2D5.exceptions.NotFoundException;
 import it.danielrrapi.U5W2D5.payloads.NewDipendenteDTO;
 import it.danielrrapi.U5W2D5.repositories.DipendenteDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,21 @@ public class DipendenteService {
         });
         Dipendente newDipendente = new Dipendente(payload.username(), payload.name(), payload.cognome(), payload.email());
         return dipendenteDAO.save(newDipendente);
+    }
+
+    public Dipendente findById(long id) { return dipendenteDAO.findById(id).orElseThrow(() -> new NotFoundException(id)); }
+
+    public Dipendente findByIdAndUpdate(long id, NewDipendenteDTO payload) {
+        Dipendente found = this.findById(id);
+        found.setNome(payload.name());
+        found.setCognome(payload.cognome());
+        found.setUsername(payload.username());
+        found.setEmail(payload.email());
+        return dipendenteDAO.save(found);
+    }
+
+    public void findByIdAndDelete(long id) {
+        Dipendente found = this.findById(id);
+        dipendenteDAO.delete(found);
     }
 }
